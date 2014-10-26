@@ -1,0 +1,6 @@
+ofxGui
+ofxNetwork
+ofxOpenCv
+ofxXmlSettings
+ofxCv
+ofxPostGlitch
