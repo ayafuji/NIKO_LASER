@@ -55,5 +55,5 @@ class Comment
 end
 
 #みたい放送の放送IDを入れる(coxxxxxxx形式でもOK)
-comment = Comment.new 'lv197927647'
+comment = Comment.new 'lv196964467'
 comment.start()

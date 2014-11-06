@@ -6,8 +6,12 @@
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>40FB551C-8D8E-4901-A0E7-68603E39B448</string>
+	<key>IDESourceControlProjectName</key>
+	<string>KAMATTE_LASER</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>415C2BD780ED5C18437AFFB881CBF3AE559BBCF9</key>
+		<string>github.com:ayafuji/NIKO_LASER.git</string>
 		<key>C1E8919E75191C5A81309888FBBC5793267330D8</key>
 		<string>github.com:memo/ofxEtherdream.git</string>
 		<key>F080FE456D2598C8CEBB59BC836218BE8B5468F4</key>
@@ -15,23 +19,35 @@
 		<key>F71958031D205D2C5B7FC71EE73A2878789BBF46</key>
 		<string>github.com:memo/ofxIlda.git</string>
 	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>KAMATTE_LASER.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>415C2BD780ED5C18437AFFB881CBF3AE559BBCF9</key>
+		<string>../..</string>
 		<key>C1E8919E75191C5A81309888FBBC5793267330D8</key>
-		<string>ofxEtherdream/</string>
+		<string>../../../addons/ofxEtherdream</string>
 		<key>F080FE456D2598C8CEBB59BC836218BE8B5468F4</key>
-		<string>ofxAppGLFWWindowMulti/</string>
+		<string>../../../addons/ofxAppGLFWWindowMulti</string>
 		<key>F71958031D205D2C5B7FC71EE73A2878789BBF46</key>
-		<string>ofxIlda/</string>
+		<string>../../../addons/ofxIlda</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>github.com:memo/ofxIlda.git</string>
+	<string>github.com:ayafuji/NIKO_LASER.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F71958031D205D2C5B7FC71EE73A2878789BBF46</string>
+	<string>415C2BD780ED5C18437AFFB881CBF3AE559BBCF9</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>415C2BD780ED5C18437AFFB881CBF3AE559BBCF9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>KAMATTE_LASER</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

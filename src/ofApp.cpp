@@ -16,8 +16,8 @@ wstring ofApp::stringConvertToW(const char* c_buff) {
 void ofApp::setup(){
     
     /* basic settings */
-    ofSetFrameRate(30);
-    ofBackground(0, 0, 0);
+    ofSetFrameRate(60);
+    ofBackground(255);
     ofSetVerticalSync(30);
     
     /* gui */
@@ -26,6 +26,10 @@ void ofApp::setup(){
     imageGui.add(cannyThresholdGUI.setup("cannyThresholdGUI",ofVec2f(100, 50),ofVec2f(0,0),ofVec2f(255,255)));
     imageGui.add(renderAdaptiveThreashold.setup("renderAdaptiveThreashold",ofVec2f(0, 0),ofVec2f(0,0),ofVec2f(255,255)));
     imageGui.add(renderAdaptiveThreashold2.setup("renderAdaptiveThreashold2",ofVec2f(0, 0),ofVec2f(0,0),ofVec2f(255,255)));
+    imageGui.add(smoothAmountGUI.setup( "smoothAmountGUI", 0, 0, 100 ));
+    imageGui.add(optimizeToleranceGUI.setup( "optimizeToleranceGUI", 0, 0, 1 ));
+    imageGui.add(collapseGUI.setup( "collapseGUI", 0, 0, 100 ));
+    imageGui.add(spacingGUI.setup( "spacingGUI.", 0, 0, 100 ));
     
     
     /* UDP Connection */
@@ -34,19 +38,19 @@ void ofApp::setup(){
     udpConnection.SetNonBlocking(true);
     
     /* ofxTruetypeFont */
-    commentFont.loadFont("ヒラギノ角ゴ Pro W6.otf", 70, true, true);
+    commentFont.loadFont("Yu Gothic Medium.otf", 70, true, true);
     
     /* コメント管理 */
     commentCounter = 0;
     
     /* laserImageProcessing */
-    grabImage.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
-    blurImage.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
-    cannyImage.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
-    ofxDstVid.allocate(ofGetWidth(), ofGetHeight());
+    grabImage.allocate(LASER_WIDTH, LASER_HEIGHT, OF_IMAGE_COLOR);
+    blurImage.allocate(LASER_WIDTH, LASER_HEIGHT, OF_IMAGE_COLOR);
+    cannyImage.allocate(LASER_WIDTH, LASER_HEIGHT, OF_IMAGE_COLOR);
+    ofxDstVid.allocate(LASER_WIDTH, LASER_HEIGHT);
     
     /* effect */
-    myFbo.allocate(ofGetWidth(), ofGetHeight());
+    myFbo.allocate(LASER_WIDTH, LASER_HEIGHT);
     
     // Setup light
 	//light.setPosition(1000, 1000, 2000);
@@ -59,21 +63,50 @@ void ofApp::setup(){
     etherdream.setup();
     etherdream.setPPS(30000);
     
+    /* FRAME */
+    ildaFrame.params.draw.lines = true;
+    ildaFrame.params.draw.points = true;
+    ildaFrame.params.output.transform.doFlipX = false;
+    
     /* Render */
-    ildaRender.setup(ofGetWidth(), ofGetHeight());
-    
-    /* initialize */
-    string hogemess = "おはよう";
-    ofRectangle rect;
-    rect = commentFont.getStringBoundingBox(stringConvertToW(hogemess.c_str()), 0, 0);
-    float stringWidth = rect.width;
-    float stringHeight = rect.height;
-    
-    tempMessage9 = stringConvertToW(hogemess.c_str());
-    tempMessagePos9 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
+    ildaRender.setup(LASER_WIDTH, LASER_HEIGHT);
+
     
     showStr = true;
-
+    
+    grabDispPos.x = ofGetWidth() - LASER_WIDTH - 50;
+    grabDispPos.y = 50;
+    
+    wstring wMessageL = L"トマト";
+    comments.push_back(wMessageL);
+    
+    ofRectangle rect;
+    rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
+    float stringWidth = rect.width;
+    float stringHeight = rect.height;
+    ofPoint point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    debugPos.push_back(point);
+    
+    wMessageL = L"しょうがくせい";
+    comments.push_back(wMessageL);
+    
+    rect;
+    rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
+    stringWidth = rect.width;
+    stringHeight = rect.height;
+    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    debugPos.push_back(point);
+    
+    wMessageL = L"バナナ";
+    comments.push_back(wMessageL);
+    
+    rect;
+    rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
+    stringWidth = rect.width;
+    stringHeight = rect.height;
+    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    debugPos.push_back(point);
+    
 }
 
 //--------------------------------------------------------------
@@ -85,11 +118,19 @@ void ofApp::update(){
     
     
     char udpMessage[100000];
-    udpConnection.Receive(udpMessage,100);
-    string message=udpMessage;
-    if(message!=""){
+    udpConnection.Receive(udpMessage,10000);
+    wstring wMessage = stringConvertToW(udpMessage);
+    string message = udpMessage;
+    if(message !=""){
         cout << message << endl;
-        serialComUpdate(message);
+        comments.push_back(wMessage);
+        
+        ofRectangle rect;
+        rect = commentFont.getStringBoundingBox(wMessage, 0, 0);
+        float stringWidth = rect.width;
+        float stringHeight = rect.height;
+        ofPoint point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+        debugPos.push_back(point);
     }
     
     /* 画像処理 */
@@ -101,7 +142,7 @@ void ofApp::update(){
     /* 輪郭抽出 */
     Mat preConvertImage, preCannyImage;
     ofImage srcCannyImage;
-    srcCannyImage.setFromPixels(blurImage.getPixels(), ofGetWidth(), ofGetHeight(),  OF_IMAGE_COLOR);
+    srcCannyImage.setFromPixels(blurImage.getPixels(), LASER_WIDTH, LASER_HEIGHT,  OF_IMAGE_COLOR);
     
     convertColor(srcCannyImage, preConvertImage, CV_RGB2GRAY);
     Canny(preConvertImage, preCannyImage, cannyThresholdGUI->x, cannyThresholdGUI->y, 3);
@@ -110,72 +151,15 @@ void ofApp::update(){
     /* FBO */
     mainCommentFBODraw();
     
-//    /* renderTarget params */
-//    ildaRender.params.cv.adaptiveThresholdAmount = renderAdaptiveThreashold->x;
-//    ildaRender.params.cv.adaptiveThresholdBlock = renderAdaptiveThreashold->y;
+    /* LASER PROCESSING */
+    ildaFrame.polyProcessor.params.smoothAmount = smoothAmountGUI;
+    ildaFrame.polyProcessor.params.optimizeTolerance = optimizeToleranceGUI;
+    ildaFrame.polyProcessor.params.collapse = collapseGUI;
+    ildaFrame.polyProcessor.params.spacing = spacingGUI;
     
-
-}
-
-void ofApp::serialComUpdate(string _message) {
-    ofRectangle rect;
-    rect = commentFont.getStringBoundingBox(stringConvertToW(_message.c_str()), 0, 0);
-    float stringWidth = rect.width;
-    float stringHeight = rect.height;
+    ildaFrame.clear();
+    ildaRender.update(ildaFrame);
     
-    if (commentCounter == 0) {
-        tempMessage0 = stringConvertToW(_message.c_str());
-        tempMessagePos0 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 1) {
-        tempMessage1 = stringConvertToW(_message.c_str());
-        tempMessagePos1 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 2){
-        tempMessage2 = stringConvertToW(_message.c_str());
-        tempMessagePos2 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 3) {
-        tempMessage3 = stringConvertToW(_message.c_str());
-        tempMessagePos3 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 4) {
-        tempMessage4 = stringConvertToW(_message.c_str());
-        tempMessagePos4 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 5) {
-        tempMessage5 = stringConvertToW(_message.c_str());
-        tempMessagePos5 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 6) {
-        tempMessage6 = stringConvertToW(_message.c_str());
-        tempMessagePos6 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 7) {
-        tempMessage7 = stringConvertToW(_message.c_str());
-        tempMessagePos7 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 8) {
-        tempMessage8 = stringConvertToW(_message.c_str());
-        tempMessagePos8 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else if (commentCounter == 9) {
-        tempMessage9 = stringConvertToW(_message.c_str());
-        tempMessagePos9 = ofPoint(ofRandom(0, ofGetWidth() - stringWidth), ofRandom(stringHeight, ofGetHeight() - stringHeight));
-    } else {
-        commentCounter = 0;
-    }
-    
-    commentCounter++;
-    //debugPos.clear();
-    
-    debugPos.push_back(tempMessagePos0);
-    debugPos.push_back(tempMessagePos1);
-    debugPos.push_back(tempMessagePos2);
-    debugPos.push_back(tempMessagePos3);
-    debugPos.push_back(tempMessagePos4);
-    debugPos.push_back(tempMessagePos5);
-    debugPos.push_back(tempMessagePos6);
-    debugPos.push_back(tempMessagePos7);
-    debugPos.push_back(tempMessagePos8);
-    debugPos.push_back(tempMessagePos9);
-    
-    for (int i=0; i < debugPos.size(); i++) {
-        for (int j=0; j < debugPos.size(); j++) {
-            
-        }
-    }
     
 }
 
@@ -185,74 +169,134 @@ void ofApp::draw(){
     ofSetColor(255, 255, 255);
     if( winManager.getActiveWindowNo() == 0){
         
-        //myFbo.draw(0, 0);
-        
-        
-        ofClear(0, 0, 0,255);
-        ofBackground(0, 0, 0);
-        ofPushMatrix();
-        ofSetColor(255, 0, 0);
-        ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-        ofRotateZ(ofGetFrameNum());
-        //ofRect(- 50, -50, 100, 100);
-        ofPopMatrix();
         if(showStr) serialComDraw();
         
-        grabImage.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        ofSetColor(255, 255, 255);
+        ofRect(grabDispPos.x, grabDispPos.y, LASER_WIDTH, LASER_HEIGHT);
         
-        // do your thang
+        ofSetColor(255);
+        grabImage.grabScreen(grabDispPos.x, grabDispPos.y, LASER_WIDTH, LASER_HEIGHT);
+        
+        // LASER PROCESSING
         ildaFrame.update();
-        
-        
-        // send points to the etherdream
         etherdream.setPoints(ildaFrame);
     
+        /* DEBUG GUI */
         imageGui.draw();
         
-    }else{
-        ofBackground(60, 60, 60);
-//        cannyImage.draw(0, 0, grabImage.width, grabImage.height);
+        ofRect(50, ofGetHeight() - 200 - 50, 200, 200);
+        ildaRender.getContourFinder().draw(50, ofGetHeight() - 200 - 50, 200, 200);
         
-        // draw to the screen
-        ildaFrame.draw(0, 0, ofGetWidth(), ofGetHeight());
-        ildaRender.draw(0, 0, ofGetWidth(), ofGetHeight());
-        ildaRender.getContourFinder().draw(0, 0, 200, 200);
+        ofRect(50 + 200, ofGetHeight() - 200 - 50, 200, 200);
+        ildaRender.getGreyImage().draw(50 + 200, ofGetHeight() - 200 - 50, 200, 200);
+        
+        ofRect(50 + 200 + 200, ofGetHeight() - 200 - 50, 200, 200);
+        ildaRender.getColorImage().draw(50 + 200 + 200, ofGetHeight() - 200 - 50, 200, 200);
+        
+    }else{
+        ofBackground(0);
+        ildaFrame.draw(0, 0, LASER_WIDTH, LASER_HEIGHT);
+        ildaRender.draw(0, 0, LASER_WIDTH, LASER_HEIGHT);
+        
     }
 }
 
 void ofApp::mainCommentFBODraw() {
-    
     ildaRender.clear();
     ildaRender.begin();
-    grabImage.draw(0, 0, ofGetWidth(), ofGetHeight());
+    grabImage.draw(0, 0, LASER_WIDTH, LASER_HEIGHT);
     ildaRender.end();
 }
 
 void ofApp::serialComDraw() {
-    ofSetColor(255, 255, 255);
-    commentFont.drawString(tempMessage0, tempMessagePos0.x, tempMessagePos0.y);
-    commentFont.drawString(tempMessage1, tempMessagePos1.x, tempMessagePos1.y);
-    commentFont.drawString(tempMessage2, tempMessagePos2.x, tempMessagePos2.y);
-    commentFont.drawString(tempMessage3, tempMessagePos3.x, tempMessagePos3.y);
-    commentFont.drawString(tempMessage4, tempMessagePos4.x, tempMessagePos4.y);
-    commentFont.drawString(tempMessage5, tempMessagePos5.x, tempMessagePos5.y);
-    commentFont.drawString(tempMessage6, tempMessagePos6.x, tempMessagePos6.y);
-    commentFont.drawString(tempMessage7, tempMessagePos7.x, tempMessagePos7.y);
-    commentFont.drawString(tempMessage8, tempMessagePos8.x, tempMessagePos8.y);
-    commentFont.drawString(tempMessage9, tempMessagePos9.x, tempMessagePos9.y);
+    ofSetColor(255, 255, 255);    
+    //for (int i=0; i < comments.size(); i++) {
+    
+    ofPushMatrix();
+    int index = ofGetFrameNum() % comments.size();
+    ofTranslate(debugPos[index].x, debugPos[index].y);
+    ofRotateZ(ofGetFrameNum() * 2);
+    ofRectangle rect = commentFont.getStringBoundingBox(comments[index], 0, 0);
+    float stringWidth = rect.width;
+    float stringHeight = rect.height;
+    commentFont.drawString(comments[index], -rect.width / 2, -rect.height / 2);
+    ofPopMatrix();
+        //commentFont.drawString(comments[i], ofGetMouseX(), ofGetMouseY());
+    //}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     
     if (key == 's') {
-        if (showStr == false) {
-            showStr = true;
-        } else {
-            showStr = false;
-        }
+//        if (showStr == false) {
+//            showStr = true;
+//        } else {
+//            showStr = false;
+//        }
     } else if(key == ' ') {
         ildaRender.update(ildaFrame);
+    }
+    
+    switch(key) {
+        case 'f': ofToggleFullscreen(); break;
+            
+            
+            // clear the frame
+        case 'c': ildaFrame.clear(); break;
+            
+            // draw rectangle
+        case 'r': {
+            ofPolyline p = ofPolyline::fromRectangle(ofRectangle(ofRandomuf()/2, ofRandomuf()/2, ofRandomuf()/2, ofRandomuf()/2));
+            ildaFrame.addPoly(p);
+        }
+            break;
+            
+            // change color
+        case 'R': ildaFrame.params.output.color.r = 1 - ildaFrame.params.output.color.r; break;
+        case 'G': ildaFrame.params.output.color.g = 1 - ildaFrame.params.output.color.g; break;
+        case 'B': ildaFrame.params.output.color.b = 1 - ildaFrame.params.output.color.b; break;
+            
+            // toggle draw lines (on screen only)
+        case 'l': ildaFrame.params.draw.lines ^= true; break;
+            
+            // toggle loop for last poly
+        case 'o': ildaFrame.getLastPoly().setClosed(ildaFrame.getLastPoly().isClosed()); break;
+            
+            // toggle draw points (on screen only)
+        case 'p': ildaFrame.params.draw.points ^= true; break;
+            
+            // adjust point count
+        case '.': ildaFrame.polyProcessor.params.targetPointCount++; break;
+        case ',': if(ildaFrame.polyProcessor.params.targetPointCount > 10) ildaFrame.polyProcessor.params.targetPointCount--; break;
+            
+            // adjust point count quicker
+        case '>': ildaFrame.polyProcessor.params.targetPointCount += 10; break;
+        case '<': if(ildaFrame.polyProcessor.params.targetPointCount > 20) ildaFrame.polyProcessor.params.targetPointCount -= 10; break;
+            
+            // flip image
+        case 'x': ildaFrame.params.output.transform.doFlipX ^= true; break;
+        case 'y': ildaFrame.params.output.transform.doFlipY ^= true; break;
+            
+            // cap image
+        case 'X': ildaFrame.params.output.doCapX ^= true; break;
+        case 'Y': ildaFrame.params.output.doCapY ^= true; break;
+            
+            // move output around
+        case OF_KEY_UP: ildaFrame.params.output.transform.offset.y -= 0.05; break;
+        case OF_KEY_DOWN: ildaFrame.params.output.transform.offset.y += 0.05; break;
+        case OF_KEY_LEFT: ildaFrame.params.output.transform.offset.x -= 0.05; break;
+        case OF_KEY_RIGHT: ildaFrame.params.output.transform.offset.x += 0.05; break;
+            
+            // scale output
+        case 'w': ildaFrame.params.output.transform.scale.y += 0.05; break;
+        case 's': ildaFrame.params.output.transform.scale.y -= 0.05; break;
+        case 'a': ildaFrame.params.output.transform.scale.x -= 0.05; break;
+        case 'd': ildaFrame.params.output.transform.scale.x += 0.05; break;
+            
+        case 'C': ildaFrame.drawCalibration(); break;
+            
+        case ' ': ildaRender.update(ildaFrame); break;
     }
 }
 

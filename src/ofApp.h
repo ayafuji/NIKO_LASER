@@ -9,6 +9,10 @@
 #include "ofxGui.h"
 #include "ofxEtherdream.h"
 
+
+#define LASER_WIDTH 400
+#define LASER_HEIGHT 400
+
 using namespace cv;
 using namespace ofxCv;
 
@@ -31,7 +35,6 @@ public:
     void mainCommentFBODraw();
     wstring stringConvertToW(const char* c_buff);
     
-    void serialComUpdate(string _message);
     void serialComDraw();
     void exit();
     
@@ -92,9 +95,14 @@ public:
     ofxVec2Slider cannyThresholdGUI;
     ofxVec2Slider renderAdaptiveThreashold;
     ofxVec2Slider renderAdaptiveThreashold2;
+    ofxFloatSlider smoothAmountGUI;
+    ofxFloatSlider optimizeToleranceGUI;
+    ofxFloatSlider collapseGUI;
+    ofxFloatSlider spacingGUI;
     
     /* LASER */
     ofxIlda::Frame ildaFrame;
     ofxIlda::RenderTarget ildaRender;
     ofxEtherdream etherdream;
+    ofPoint grabDispPos;
 };
