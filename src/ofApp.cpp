@@ -16,9 +16,16 @@ wstring ofApp::stringConvertToW(const char* c_buff) {
 void ofApp::setup(){
     
     /* basic settings */
-    ofSetFrameRate(60);
+    ofSetFrameRate(120);
     ofBackground(255);
     ofSetVerticalSync(30);
+    
+    /* xml settings */
+    /* yoga tcp */
+    bool result = settings.load("../Setting.xml");
+    settings.setTo("SETTINGS");
+    int deviceID = settings.getValue<int>("deviceID");
+    int PPS = settings.getValue<int>("PPS");
     
     /* gui */
     imageGui.setup();
@@ -30,7 +37,9 @@ void ofApp::setup(){
     imageGui.add(optimizeToleranceGUI.setup( "optimizeToleranceGUI", 0, 0, 1 ));
     imageGui.add(collapseGUI.setup( "collapseGUI", 0, 0, 100 ));
     imageGui.add(spacingGUI.setup( "spacingGUI.", 0, 0, 100 ));
-    
+    imageGui.add(comOffset.setup("comOffset", 10, -100, 100));
+    imageGui.add(comSpeed.setup("comSpeed", 5, 1, 30));
+    imageGui.add(comZ.setup("comZ", 0, -100, 100));
     
     /* UDP Connection */
     udpConnection.Create();
@@ -38,7 +47,7 @@ void ofApp::setup(){
     udpConnection.SetNonBlocking(true);
     
     /* ofxTruetypeFont */
-    commentFont.loadFont("Yu Gothic Medium.otf", 70, true, true);
+    commentFont.loadFont("Yu Gothic Medium.otf", 60, true, true);
     
     /* コメント管理 */
     commentCounter = 0;
@@ -60,13 +69,14 @@ void ofApp::setup(){
     winManager.loadWindowSettings();
     
     /* LASER */
-    etherdream.setup();
-    etherdream.setPPS(30000);
+    etherdream.setup(true, deviceID);
+    etherdream.setPPS(PPS);
+    
     
     /* FRAME */
     ildaFrame.params.draw.lines = true;
     ildaFrame.params.draw.points = true;
-    ildaFrame.params.output.transform.doFlipX = false;
+    ildaFrame.params.output.transform.doFlipX = true;
     
     /* Render */
     ildaRender.setup(LASER_WIDTH, LASER_HEIGHT);
@@ -77,60 +87,79 @@ void ofApp::setup(){
     grabDispPos.x = ofGetWidth() - LASER_WIDTH - 50;
     grabDispPos.y = 50;
     
-    wstring wMessageL = L"トマト";
+    wstring wMessageL = L"○";
     comments.push_back(wMessageL);
     
     ofRectangle rect;
     rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
     float stringWidth = rect.width;
     float stringHeight = rect.height;
-    ofPoint point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    float comX = ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH + 300;
+    float comY = ofRandom(stringHeight, LASER_HEIGHT - stringHeight);
+    ofPoint point = ofPoint(comX, comY);
     debugPos.push_back(point);
     
-    wMessageL = L"しょうがくせい";
+    wMessageL = L"けんち";
     comments.push_back(wMessageL);
     
     rect;
     rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
     stringWidth = rect.width;
     stringHeight = rect.height;
-    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH + 300, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
     debugPos.push_back(point);
     
-    wMessageL = L"バナナ";
+    wMessageL = L"ちんぱん";
     comments.push_back(wMessageL);
     
     rect;
     rect = commentFont.getStringBoundingBox(wMessageL, 0, 0);
     stringWidth = rect.width;
     stringHeight = rect.height;
-    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
+    point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH + 300, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
     debugPos.push_back(point);
+    
+    showLaser = true;
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+
+    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
     cannyImage.update();
     blurImage.update();
-    
-    
+
     char udpMessage[100000];
     udpConnection.Receive(udpMessage,10000);
     wstring wMessage = stringConvertToW(udpMessage);
     string message = udpMessage;
     if(message !=""){
-        cout << message << endl;
-        comments.push_back(wMessage);
         
-        ofRectangle rect;
-        rect = commentFont.getStringBoundingBox(wMessage, 0, 0);
-        float stringWidth = rect.width;
-        float stringHeight = rect.height;
-        ofPoint point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight, LASER_HEIGHT - stringHeight));
-        debugPos.push_back(point);
+        for (int i=0; i < comments.size(); i++) {
+            if (i < 3) {
+                ofRectangle rect;
+                rect = commentFont.getStringBoundingBox(comments[i], 0, 0);
+                float stringWidth = rect.width;
+                float stringHeight = rect.height;
+                float stringFinal = debugPos[i].x + rect.width;
+                
+                if (grabDispPos.x > stringFinal) {
+                    ofPoint point = ofPoint(ofGetWidth() - ofRandom(0, LASER_WIDTH - stringWidth) - LASER_WIDTH, ofRandom(stringHeight * 2, LASER_HEIGHT - stringHeight));
+                    debugPos[i].x = point.x;
+                    debugPos[i].y = point.y;
+                    comments[i] = wMessage;
+                    cout << message << endl;
+                    break;
+                } else {
+                    comments.push_back(wMessage);
+                }
+            }
+        }
+
     }
     
     /* 画像処理 */
@@ -160,7 +189,13 @@ void ofApp::update(){
     ildaFrame.clear();
     ildaRender.update(ildaFrame);
     
-    
+    /* debugpos 更新 */
+    int commentLimit = 3;
+    for (int i=0; i<comments.size(); i++) {
+        if (i < commentLimit) {
+            debugPos[i].x -= comSpeed;
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -175,12 +210,15 @@ void ofApp::draw(){
         ofRect(grabDispPos.x, grabDispPos.y, LASER_WIDTH, LASER_HEIGHT);
         
         ofSetColor(255);
+        ofCircle(ofGetMouseX(), ofGetMouseY(), 20);
         grabImage.grabScreen(grabDispPos.x, grabDispPos.y, LASER_WIDTH, LASER_HEIGHT);
         
         // LASER PROCESSING
         ildaFrame.update();
+        
+        
         etherdream.setPoints(ildaFrame);
-    
+        
         /* DEBUG GUI */
         imageGui.draw();
         
@@ -209,36 +247,51 @@ void ofApp::mainCommentFBODraw() {
 }
 
 void ofApp::serialComDraw() {
-    ofSetColor(255, 255, 255);    
-    //for (int i=0; i < comments.size(); i++) {
+    ofSetColor(255, 255, 255);
     
     ofPushMatrix();
-    int index = ofGetFrameNum() % comments.size();
-    ofTranslate(debugPos[index].x, debugPos[index].y);
-    ofRotateZ(ofGetFrameNum() * 2);
-    ofRectangle rect = commentFont.getStringBoundingBox(comments[index], 0, 0);
-    float stringWidth = rect.width;
-    float stringHeight = rect.height;
-    commentFont.drawString(comments[index], -rect.width / 2, -rect.height / 2);
+    ofTranslate(0, 0, comZ);
+    for (int i=0; i < comments.size(); i++) {
+        if (i < 3) {
+            
+            ofRectangle rect;
+            rect = commentFont.getStringBoundingBox(comments[i], 0, 0);
+            float stringWidth = rect.width;
+            float stringHeight = rect.height;
+            
+            if (i == 0) {
+                //process
+                commentFont.drawString(comments[i], debugPos[i].x, grabDispPos.y + stringHeight - comOffset);
+            } else if (i == 1) {
+                //process
+                //commentFont.drawString(comments[i], debugPos[i].x, grabDispPos.y + (LASER_HEIGHT / 2) + (stringHeight / 2));
+            } else if (i == 2) {
+                //process
+                //commentFont.drawString(comments[i], debugPos[i].x, grabDispPos.y + LASER_HEIGHT - stringHeight);
+            }
+        }
+
+    }
+    
+    if (showLaser) {
+        ofSetColor(0, 0, 0);
+        ofRect(grabDispPos.x, grabDispPos.y, LASER_WIDTH, LASER_HEIGHT);
+    }
+    
     ofPopMatrix();
-        //commentFont.drawString(comments[i], ofGetMouseX(), ofGetMouseY());
-    //}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     
-    if (key == 's') {
-//        if (showStr == false) {
-//            showStr = true;
-//        } else {
-//            showStr = false;
-//        }
-    } else if(key == ' ') {
-        ildaRender.update(ildaFrame);
-    }
-    
     switch(key) {
+        case ' ':
+            if (showLaser) {
+                showLaser = false;
+            } else {
+                showLaser = true;
+            }
+            break;
         case 'f': ofToggleFullscreen(); break;
             
             
@@ -295,8 +348,6 @@ void ofApp::keyPressed(int key){
         case 'd': ildaFrame.params.output.transform.scale.x += 0.05; break;
             
         case 'C': ildaFrame.drawCalibration(); break;
-            
-        case ' ': ildaRender.update(ildaFrame); break;
     }
 }
 

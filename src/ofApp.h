@@ -8,6 +8,8 @@
 #include "ofxCv.h"
 #include "ofxGui.h"
 #include "ofxEtherdream.h"
+#include "ofxIldaFrame.h"
+#include "ofxIldaRenderTarget.h"
 
 
 #define LASER_WIDTH 400
@@ -99,10 +101,20 @@ public:
     ofxFloatSlider optimizeToleranceGUI;
     ofxFloatSlider collapseGUI;
     ofxFloatSlider spacingGUI;
+    ofxIntSlider laserPPS;
+    ofxFloatSlider comOffset;
+    ofxFloatSlider comSpeed;
+    ofxFloatSlider comZ;
     
     /* LASER */
     ofxIlda::Frame ildaFrame;
     ofxIlda::RenderTarget ildaRender;
     ofxEtherdream etherdream;
+    ofxEtherdream etherdream2;
+    
     ofPoint grabDispPos;
+    
+    /* setting xml */
+    ofXml settings;
+    bool showLaser;
 };

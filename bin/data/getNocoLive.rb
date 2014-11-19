@@ -9,15 +9,19 @@ class Comment
     attr_accessor :cookie
   end
   #下の値はブラウザのクッキーから取得してください
-  self.cookie = 'user_session=user_session_2432370_e6657758aca772a7e7a15fe834862db9bed5c0f2863b7865572a2991f86ea7df'
+  self.cookie = 'user_session=user_session_24138916_95ccd75174f666c59f03a7c7a4ff6559a75789d49cfbe4d993553400707f8bf1'
   def initialize(live_id)
     @live_id = live_id
     @status = get_playerstatus()
 
     @udp = UDPSocket.open()
     @sockaddr = Socket.pack_sockaddr_in(10000, "127.0.0.1")
-
+    @sockaddr_2 = Socket.pack_sockaddr_in(10000, "192.168.1.48")
+    @sockaddr_3 = Socket.pack_sockaddr_in(10000, "192.168.1.39")
+    @commentCount = 0
+    @deviceCount = 3
   end
+
   def get_playerstatus
     Net::HTTP.start 'watch.live.nicovideo.jp' do |http|
       response = http.get "/api/getplayerstatus?v=#{@live_id}",
@@ -47,13 +51,30 @@ class Comment
         
         if comment != "" && comment.include?("/") != true then
           puts comment + "\0"
-          @udp.send(comment, 0, @sockaddr)
+
+          if @commentCount % @deviceCount == 0 then
+            @udp.send(comment, 0, @sockaddr)
+            @commentCount += 1
+          elsif @commentCount % @deviceCount == 1 then            
+            @udp.send(comment, 0, @sockaddr_2)
+            @commentCount += 1
+          elsif @commentCount % @deviceCount == 2 then
+            @udp.send(comment, 0, @sockaddr_3)
+            @commentCount += 1
+          end
         end
       end
     end
+    # while true do
+    #   sleep 1
+    #   t = Time.now
+    #   time = str = t.strftime("現在時刻 %H時 %M分 %S秒")
+    #   puts time
+    #   @udp.send(time, 0, @sockaddr)
+    # end
   end
 end
 
 #みたい放送の放送IDを入れる(coxxxxxxx形式でもOK)
-comment = Comment.new 'lv196964467'
+comment = Comment.new 'lv200169195'
 comment.start()

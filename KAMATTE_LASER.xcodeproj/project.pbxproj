@@ -17,15 +17,15 @@
 		311DF864378748129984EA1D /* Kalman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A1A692522820F935B58762 /* Kalman.cpp */; };
 		45CC483A999BF1065A6B926C /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD717072C35D324E101669 /* Distance.cpp */; };
 		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
+		592CC4FD1A13ADCB005D9CA9 /* ofxEtherdream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592CC4ED1A13ADCB005D9CA9 /* ofxEtherdream.cpp */; };
+		592CC4FE1A13ADCB005D9CA9 /* etherdream.c in Sources */ = {isa = PBXBuildFile; fileRef = 592CC4F81A13ADCB005D9CA9 /* etherdream.c */; };
+		592CC4FF1A13ADCB005D9CA9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 592CC4FA1A13ADCB005D9CA9 /* Makefile */; };
+		592CC5001A13ADCB005D9CA9 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 592CC4FB1A13ADCB005D9CA9 /* test.c */; };
+		592CC5011A13ADCB005D9CA9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 592CC4FC1A13ADCB005D9CA9 /* Makefile */; };
 		599F381719FBEC62001875FA /* ofxTrueTypeFontUC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 599F381519FBEC62001875FA /* ofxTrueTypeFontUC.cpp */; };
 		59C5B90219FC0C9C005D0346 /* ofxAppGLFWWindowMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B8FE19FC0C9C005D0346 /* ofxAppGLFWWindowMulti.cpp */; };
 		59C5B90319FC0C9C005D0346 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B90019FC0C9C005D0346 /* WindowManager.cpp */; };
 		59C5B90619FC0DDD005D0346 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59C5B90519FC0DDD005D0346 /* Carbon.framework */; };
-		59C5B96719FC2690005D0346 /* ofxEtherdream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B95719FC2690005D0346 /* ofxEtherdream.cpp */; };
-		59C5B96819FC2690005D0346 /* etherdream.c in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B96219FC2690005D0346 /* etherdream.c */; };
-		59C5B96919FC2690005D0346 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B96419FC2690005D0346 /* Makefile */; };
-		59C5B96A19FC2690005D0346 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B96519FC2690005D0346 /* test.c */; };
-		59C5B96B19FC2690005D0346 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B96619FC2690005D0346 /* Makefile */; };
 		5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC5DA1C87211D4F6377DA719 /* tinyxmlparser.cpp */; };
 		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
 		5CC34D433F5806179935B89D /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03A75A648BC4CF1D9DEDD0CE /* Flow.cpp */; };
@@ -145,6 +145,18 @@
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
 		58140E0F92D37844E9C8883D /* Calibration.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Calibration.h; path = ../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Calibration.h; sourceTree = SOURCE_ROOT; };
 		586A8EC141BDFA82B3B0518C /* config.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = config.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/config.h; sourceTree = SOURCE_ROOT; };
+		592CC4ED1A13ADCB005D9CA9 /* ofxEtherdream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxEtherdream.cpp; sourceTree = "<group>"; };
+		592CC4EE1A13ADCB005D9CA9 /* ofxEtherdream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxEtherdream.h; sourceTree = "<group>"; };
+		592CC4F11A13ADCB005D9CA9 /* fatfs_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fatfs_readme.txt; sourceTree = "<group>"; };
+		592CC4F21A13ADCB005D9CA9 /* openocd.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = openocd.cfg; sourceTree = "<group>"; };
+		592CC4F31A13ADCB005D9CA9 /* protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = "<group>"; };
+		592CC4F51A13ADCB005D9CA9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		592CC4F71A13ADCB005D9CA9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		592CC4F81A13ADCB005D9CA9 /* etherdream.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = etherdream.c; sourceTree = "<group>"; };
+		592CC4F91A13ADCB005D9CA9 /* etherdream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = etherdream.h; sourceTree = "<group>"; };
+		592CC4FA1A13ADCB005D9CA9 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		592CC4FB1A13ADCB005D9CA9 /* test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
+		592CC4FC1A13ADCB005D9CA9 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		59626D03C690200AD4E8B3A6 /* ml.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ml.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ml/ml.hpp; sourceTree = SOURCE_ROOT; };
 		599F381519FBEC62001875FA /* ofxTrueTypeFontUC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTrueTypeFontUC.cpp; sourceTree = "<group>"; };
 		599F381619FBEC62001875FA /* ofxTrueTypeFontUC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTrueTypeFontUC.h; sourceTree = "<group>"; };
@@ -153,18 +165,6 @@
 		59C5B90019FC0C9C005D0346 /* WindowManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		59C5B90119FC0C9C005D0346 /* WindowManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		59C5B90519FC0DDD005D0346 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		59C5B95719FC2690005D0346 /* ofxEtherdream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxEtherdream.cpp; sourceTree = "<group>"; };
-		59C5B95819FC2690005D0346 /* ofxEtherdream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxEtherdream.h; sourceTree = "<group>"; };
-		59C5B95B19FC2690005D0346 /* fatfs_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fatfs_readme.txt; sourceTree = "<group>"; };
-		59C5B95C19FC2690005D0346 /* openocd.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = openocd.cfg; sourceTree = "<group>"; };
-		59C5B95D19FC2690005D0346 /* protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = "<group>"; };
-		59C5B95F19FC2690005D0346 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		59C5B96119FC2690005D0346 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		59C5B96219FC2690005D0346 /* etherdream.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = etherdream.c; sourceTree = "<group>"; };
-		59C5B96319FC2690005D0346 /* etherdream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = etherdream.h; sourceTree = "<group>"; };
-		59C5B96419FC2690005D0346 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		59C5B96519FC2690005D0346 /* test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
-		59C5B96619FC2690005D0346 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		59C5B96E19FC2694005D0346 /* ofxIldaFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxIldaFrame.h; sourceTree = "<group>"; };
 		59C5B96F19FC2694005D0346 /* ofxIldaPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxIldaPoint.h; sourceTree = "<group>"; };
 		59C5B97019FC2694005D0346 /* ofxIldaPoly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxIldaPoly.h; sourceTree = "<group>"; };
@@ -547,6 +547,67 @@
 			name = gpu;
 			sourceTree = "<group>";
 		};
+		592CC4EB1A13ADCB005D9CA9 /* ofxEtherdream */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4EC1A13ADCB005D9CA9 /* src */,
+				592CC4EF1A13ADCB005D9CA9 /* libs */,
+			);
+			name = ofxEtherdream;
+			sourceTree = "<group>";
+		};
+		592CC4EC1A13ADCB005D9CA9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4ED1A13ADCB005D9CA9 /* ofxEtherdream.cpp */,
+				592CC4EE1A13ADCB005D9CA9 /* ofxEtherdream.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxEtherdream/src;
+			sourceTree = "<group>";
+		};
+		592CC4EF1A13ADCB005D9CA9 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4F01A13ADCB005D9CA9 /* common */,
+				592CC4F41A13ADCB005D9CA9 /* driver */,
+			);
+			name = libs;
+			path = ../../../addons/ofxEtherdream/libs;
+			sourceTree = "<group>";
+		};
+		592CC4F01A13ADCB005D9CA9 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4F11A13ADCB005D9CA9 /* fatfs_readme.txt */,
+				592CC4F21A13ADCB005D9CA9 /* openocd.cfg */,
+				592CC4F31A13ADCB005D9CA9 /* protocol.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		592CC4F41A13ADCB005D9CA9 /* driver */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4F51A13ADCB005D9CA9 /* .gitignore */,
+				592CC4F61A13ADCB005D9CA9 /* libetherdream */,
+				592CC4FC1A13ADCB005D9CA9 /* Makefile */,
+			);
+			path = driver;
+			sourceTree = "<group>";
+		};
+		592CC4F61A13ADCB005D9CA9 /* libetherdream */ = {
+			isa = PBXGroup;
+			children = (
+				592CC4F71A13ADCB005D9CA9 /* .gitignore */,
+				592CC4F81A13ADCB005D9CA9 /* etherdream.c */,
+				592CC4F91A13ADCB005D9CA9 /* etherdream.h */,
+				592CC4FA1A13ADCB005D9CA9 /* Makefile */,
+				592CC4FB1A13ADCB005D9CA9 /* test.c */,
+			);
+			path = libetherdream;
+			sourceTree = "<group>";
+		};
 		599F381319FBEC62001875FA /* ofxTrueTypeFontUC_2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -583,67 +644,6 @@
 			);
 			name = src;
 			path = ../../../addons/ofxAppGLFWWindowMulti/src;
-			sourceTree = "<group>";
-		};
-		59C5B95519FC2690005D0346 /* ofxEtherdream */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B95619FC2690005D0346 /* src */,
-				59C5B95919FC2690005D0346 /* libs */,
-			);
-			name = ofxEtherdream;
-			sourceTree = "<group>";
-		};
-		59C5B95619FC2690005D0346 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B95719FC2690005D0346 /* ofxEtherdream.cpp */,
-				59C5B95819FC2690005D0346 /* ofxEtherdream.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxEtherdream/src;
-			sourceTree = "<group>";
-		};
-		59C5B95919FC2690005D0346 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B95A19FC2690005D0346 /* common */,
-				59C5B95E19FC2690005D0346 /* driver */,
-			);
-			name = libs;
-			path = ../../../addons/ofxEtherdream/libs;
-			sourceTree = "<group>";
-		};
-		59C5B95A19FC2690005D0346 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B95B19FC2690005D0346 /* fatfs_readme.txt */,
-				59C5B95C19FC2690005D0346 /* openocd.cfg */,
-				59C5B95D19FC2690005D0346 /* protocol.h */,
-			);
-			path = common;
-			sourceTree = "<group>";
-		};
-		59C5B95E19FC2690005D0346 /* driver */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B95F19FC2690005D0346 /* .gitignore */,
-				59C5B96019FC2690005D0346 /* libetherdream */,
-				59C5B96619FC2690005D0346 /* Makefile */,
-			);
-			path = driver;
-			sourceTree = "<group>";
-		};
-		59C5B96019FC2690005D0346 /* libetherdream */ = {
-			isa = PBXGroup;
-			children = (
-				59C5B96119FC2690005D0346 /* .gitignore */,
-				59C5B96219FC2690005D0346 /* etherdream.c */,
-				59C5B96319FC2690005D0346 /* etherdream.h */,
-				59C5B96419FC2690005D0346 /* Makefile */,
-				59C5B96519FC2690005D0346 /* test.c */,
-			);
-			path = libetherdream;
 			sourceTree = "<group>";
 		};
 		59C5B96C19FC2694005D0346 /* ofxIlda */ = {
@@ -837,8 +837,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				592CC4EB1A13ADCB005D9CA9 /* ofxEtherdream */,
 				59C5B96C19FC2694005D0346 /* ofxIlda */,
-				59C5B95519FC2690005D0346 /* ofxEtherdream */,
 				59C5B8FC19FC0C9C005D0346 /* ofxAppGLFWWindowMulti */,
 				599F381319FBEC62001875FA /* ofxTrueTypeFontUC_2 */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
@@ -1104,7 +1104,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59C5B96B19FC2690005D0346 /* Makefile in Sources */,
+				592CC5011A13ADCB005D9CA9 /* Makefile in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
@@ -1117,9 +1117,9 @@
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
 				960D20B191346612D5C05A6A /* ofxTCPClient.cpp in Sources */,
 				125506CD3E5F428AAFE5CC65 /* ofxTCPManager.cpp in Sources */,
-				59C5B96719FC2690005D0346 /* ofxEtherdream.cpp in Sources */,
+				592CC4FD1A13ADCB005D9CA9 /* ofxEtherdream.cpp in Sources */,
 				66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */,
-				59C5B96919FC2690005D0346 /* Makefile in Sources */,
+				592CC4FF1A13ADCB005D9CA9 /* Makefile in Sources */,
 				E2564CF7DDB3713772BB682E /* ofxUDPManager.cpp in Sources */,
 				250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */,
 				1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */,
@@ -1135,7 +1135,7 @@
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				B6840996567E78436F7ECFAB /* ETF.cpp in Sources */,
 				F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */,
-				59C5B96A19FC2690005D0346 /* test.c in Sources */,
+				592CC5001A13ADCB005D9CA9 /* test.c in Sources */,
 				EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */,
 				6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */,
 				45CC483A999BF1065A6B926C /* Distance.cpp in Sources */,
@@ -1143,7 +1143,7 @@
 				2023EF517ED2D8B397511D4B /* Helpers.cpp in Sources */,
 				311DF864378748129984EA1D /* Kalman.cpp in Sources */,
 				C602002DE761F9B52DB4400A /* ObjectFinder.cpp in Sources */,
-				59C5B96819FC2690005D0346 /* etherdream.c in Sources */,
+				592CC4FE1A13ADCB005D9CA9 /* etherdream.c in Sources */,
 				59C5B90319FC0C9C005D0346 /* WindowManager.cpp in Sources */,
 				7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */,
 				10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */,

@@ -1,0 +1,4 @@
+<window fullscreen="0">
+    <fullscreen-rect x="123" y="66" width="1440" height="900"></fullscreen-rect>
+    <window-rect x="33" y="76" width="1280" height="719"></window-rect>
+</window>

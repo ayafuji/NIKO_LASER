@@ -1,8 +1,0 @@
-<window fullscreen="0">
-    <fullscreen-rect x="123" y="66" width="1440" height="900"></fullscreen-rect>
-    <window-rect x="99" y="205" width="1280" height="719"></window-rect>
-</window>
-<window fullscreen="0">
-    <fullscreen-rect x="286" y="92" width="1440" height="900"></fullscreen-rect>
-    <window-rect x="1338" y="421" width="400" height="400"></window-rect>
-</window>
